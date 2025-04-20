@@ -26,10 +26,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
+          cache: 'npm'
 
       - name: Use Ruby 3.3.0
         uses: ruby/setup-ruby@v1
@@ -37,15 +37,18 @@ jobs:
           ruby-version: 3.3.0
           bundler-cache: true
 
-      - name: Limpar cache do Bundler
+      - name: Clean Bundler cache
         run: bundle clean --force
 
       - name: Install dependencies
-        run: bundle install && npm install
+        run: |
+          bundle install
+          npm ci # usa o package-lock.json para evitar problemas de cache
+        env:
+          NODE_ENV: test
 
       - name: Run Migrations
-        run: |
-          bundle exec ruby ./src/main/config/migrations.rb
+        run: bundle exec ruby ./src/main/config/migrations.rb
         env:
           DRIVER: postgres
           POSTGRES_DB: ruby-grape-clean-api
