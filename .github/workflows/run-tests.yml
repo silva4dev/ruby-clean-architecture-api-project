@@ -57,7 +57,7 @@ jobs:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
 
-      - name: Run Tests
+      - name: Run RSpec tests with coverage
         run: COVERAGE=true bundle exec rspec --format documentation --color
         env:
           DRIVER: postgres
