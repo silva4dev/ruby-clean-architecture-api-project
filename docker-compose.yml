@@ -26,7 +26,7 @@ services:
     container_name: migration-runner_test
     image: ruby:latest
     working_dir: /usr/src/ruby-clean-api
-    command: bash -c "bundle install && bundle exec ruby ./src/main/config/migrations.rb"
+    command: bash -c "bundle install && bundle exec ruby ./src/main/config/migrations.rb && bundle exec ruby ./src/infrastructure/db/seeds.rb"
     env_file:
       - .env.test
     environment:
@@ -46,7 +46,7 @@ services:
     image: ruby:latest
     working_dir: /usr/src/ruby-clean-api
     restart: always
-    command: bash -c "bundle install && ruby ./src/main/config/migrations.rb && rerun -- rackup -p 5050 -r ./src/main/server.rb -s puma -o 0.0.0.0 2>/dev/null"
+    command: bash -c "bundle install && ruby ./src/main/config/migrations.rb && ruby ./src/infrastructure/db/seeds.rb && rerun -- rackup -p 5050 -r ./src/main/server.rb -s puma -o 0.0.0.0 2>/dev/null"
     depends_on:
       - postgres
       - postgres_test
