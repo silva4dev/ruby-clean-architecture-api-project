@@ -57,6 +57,16 @@ jobs:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
 
+      - name: Run Seeds
+        run: bundle exec ruby ./src/infrastructure/db/seeds.rb
+        env:
+          DRIVER: postgres
+          POSTGRES_DB: ruby-grape-clean-api
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+
       - name: Run RSpec tests with coverage
         run: COVERAGE=true bundle exec rspec --format documentation --color
         env:
